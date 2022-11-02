@@ -13,17 +13,25 @@
     <header>
         <h1>Welcome to Jake's Javascript Quiz</h1>
         <div class="instructions">Press start to begin</div>
-        <div id="Timer">Timer:</div>
+        <div>Timer: <span id="timer">0</span></div>
     </header>
 
     <main>
-        <p>
-            The instructions are simple, once you click start the timer begins. If the timer hits 0 before
-            you answer all the questions, you lose. Every time you answer a question wrong, you are deducted
-            time from the timer. Good luck, and have fun!
-        </p>
-        <button id="start">Start!</button>
+        <div id="first">
+            <p>
+                The instructions are simple, once you click start the timer begins. If the timer hits 0 before
+                you answer all the questions, you lose. Every time you answer a question wrong, you are deducted
+                time from the timer. The quiz is finished, once you answer all 10 questions. Good luck, and have fun!
+            </p>
+            <button id="start">Start!</button>
+        </div>
+
+        <div id="second" class="none"></div>
+
+        <div id="third" class="none"></div>
+
     </main>
+    <script src="./script.js"></script>
 </body>
 
 </html>
