@@ -1,16 +1,17 @@
-var start = document.getElementById("start");
+var startBtn = document.getElementById("start");
+var instructions = document.querySelector("#first");
 var time = document.getElementById("timer");
 // var instructions = document.getElementById("#first");
 var showQuestion = document.querySelector("#second");
 var showChoices = document.querySelector("#third");
-var index = [0];
+var index = 0;
 var points = [0];
 //storing all the questions as objects inside of an array
 var questions = [
     {
         title: "Questions 1",
         question: "How are multiple variables stored in Javascript?",
-        choices: ["String's", "Boolean's", "Storable's", "Array's"],
+        choices: ["String's", "Array's", "Storable's", "Boolean's"],
         answer: "Array's"
     },
     {
@@ -22,13 +23,13 @@ var questions = [
     {
         title: "Question 3",
         question: "Which of the following is a data type in Javascript?",
-        choices: ["Function", "Method", "Return", "Boolean"],
+        choices: ["Boolean", "Method", "Return", "Function"],
         answer: "Boolean"
     },
     {
         title: "Question 4",
         question: "What is used to surround a string?",
-        choices: ["Parenthesis", "Comma's", "Explimation mark", "Quotations"],
+        choices: ["Parenthesis", "Comma's", "Quotations", "Period"],
         answer: "Quotations"
     },
     {
@@ -38,81 +39,93 @@ var questions = [
         answer: "for"
     }
 ];
-var qst = questions[index];
 //timer starts at 50 seconds and if the timer hits 0 its set to stop
 var secondsLeft = 50;
 var timerInterval;
+
+function start() {
+    startTimer();
+    instructions.setAttribute("class", "none");
+    getQuestion();
+}
+
+
 function startTimer() {
     time.textContent = secondsLeft
     timerInterval = setInterval(function () {
         secondsLeft--;
         time.textContent = secondsLeft
 
-        if (secondsLeft === 0 || index == questions.length - 1) {
-            // Stops execution of action at set interval
-            clearInterval(timerInterval);
-        }
+
     }, 1000);
 };
 
 //once the start button is pressed, runs a function that pulls the question depending on where the index is currently set
 var getQuestion = function () {
-    showQuestion.textContent = questions[index].question;
-    for (let i = 0; i < questions[index].choices.length; i++) {
+    showQuestion.innerHTML = ''
+
+    var qst = questions[index];
+
+    // create an h2 to add the question into
+    var questionTitle = document.createElement('h2');
+
+    questionTitle.textContent = qst.question;
+
+    // create the container that will house the buttons for the choices
+    var questionChoices = document.createElement('div');
+    for (let i = 0; i < qst.choices.length; i++) {
 
         var li = document.createElement('button');
         li.textContent = qst.choices[i];
-        showChoices.appendChild(li);
+        li.setAttribute('value', qst.choices[i])
 
         li.addEventListener("click", function (event) {
-            var element = event.target;
-            if (element.textContent == qst.answer) {
-                index++;
-                nextQuestion();
-            } else {
-                console.log("incorrect")
-                index++;
-                nextQuestion();
+            var element = event.target.value;
+
+            if (element !== qst.answer) {
                 secondsLeft = secondsLeft - 5;
-            };
+                time.textContent = secondsLeft
+
+            }
+            index++
+
+            if (index === questions.length || secondsLeft <= 0) {
+                end()
+            } else {
+                getQuestion()
+            }
+
+
+
         });
+        questionChoices.append(li)
     }
+    showQuestion.append(questionTitle, questionChoices);
 };
+
+
+function end() {
+    // stop timer
+    clearInterval(timerInterval)
+    showChoices.removeAttribute('class')
+    showQuestion.setAttribute('class', 'none')
+
+    // display final score on page
+};
+
+
+var highScore = []
+function saveUserScore() {
+    var userScore = {
+        score: secondsLeft,
+        initals: "#initials",
+        //store information into local storage
+        //use a push function to take the newly formed object and push it into the high score array.
+    }
+    localStorage.setItem("userScore", JSON.stringify(userScore));
+}
+highScore.push(saveUserScore);
+
+
 //listens for the click of the start button then removes instructions text
-start.addEventListener("click", function () {
-    startTimer();
-    var instructions = document.querySelector("#first");
-    instructions.setAttribute("style", "display: none;");
-    getQuestion();
-});
-
-var nextQuestion = function (event) {
-    showQuestion.textContent = questions[index].question;
-    for (let i = 0; i < questions[index].choices.length; i++) {
-
-        var li = document.createElement('button');
-        li.textContent = qst.choices[i];
-    }
-};
-
-var end = function () {
-    if (secondsLeft == 0) {
-        console.log("this is the end");
-    };
-    if (index = [5]) {
-        console.log("out of questions")
-    }
-};
-
-// if else statement for right answers with points and wrong answer for minus time
-// shane said something about modles? 
-
-//take btnEl set text to choice[i]
-
-//need to check if we have any more questions
-// no endquiz
-//yes - next question
-
-// end game function { clear page of quiz
-//render high score board
-//get values user types in + score
+startBtn.addEventListener("click", start);
