@@ -13,16 +13,16 @@
     <header>
         <h1>Welcome to Jake's Javascript Quiz</h1>
         <div class="instructions">Press start to begin</div>
-        <div>Timer: <span id="timer">0</span></div>
+        <div>Time Left <span id="timer">0</span></div>
     </header>
 
     <main>
         <div id="first">
-            <p>
+            <section>
                 The instructions are simple, once you click start the timer begins. If the timer hits 0 before
                 you answer all the questions, you lose. Every time you answer a question wrong, you are deducted
                 time from the timer. The quiz is finished, once you answer all 10 questions. Good luck, and have fun!
-            </p>
+            </section>
             <button id="start">Start!</button>
         </div>
 
@@ -34,6 +34,11 @@
             <label for="">Please enter your intials</label>
             <input id="initials" type="text">
             <button id="submit">Submit</button>
+            <div class="card">
+                <h2>High Scores</h2>
+                <p>Initials<span id="saved-name"></span></p>
+                <p>Score: <span id="saved-score"></span></p>
+            </div>
         </div>
     </main>
     <script src="./script.js"></script>

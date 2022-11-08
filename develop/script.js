@@ -6,6 +6,7 @@ var showQuestion = document.querySelector("#second");
 var showChoices = document.querySelector("#third");
 var index = 0;
 var points = [0];
+// saveButton =
 //storing all the questions as objects inside of an array
 var questions = [
     {
@@ -119,13 +120,24 @@ function saveUserScore() {
     var userScore = {
         score: secondsLeft,
         initals: "#initials",
-        //store information into local storage
-        //use a push function to take the newly formed object and push it into the high score array.
     }
-    localStorage.setItem("userScore", JSON.stringify(userScore));
+    localStorage.setItem(userScore, JSON.stringify(userScore));
 }
 highScore.push(saveUserScore);
 
+function renderLastScore() {
+    // Use JSON.parse() to convert text to JavaScript object
+    var lastScore = JSON.parse(localStorage.getItem("userScore"));
+    // Check if data is returned, if not exit out of the function
+    if (lastScore !== null) {
+        document.getElementById("saved-score").innerHTML = lastScore.score;
+        document.getElementById("saved-name").innerHTML = lastScore.initals;
+    } else {
+        return;
+    }
+}
+saveUserScore();
+renderLastScore();
 
 //listens for the click of the start button then removes instructions text
 startBtn.addEventListener("click", start);
